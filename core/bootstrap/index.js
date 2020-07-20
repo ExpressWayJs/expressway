@@ -4,7 +4,7 @@
  * File Created: Saturday, 2nd May 2020 4:15:25 pm
  * Author: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Last Modified: Monday, 20th July 2020 1:03:20 pm
+ * Last Modified: Monday, 20th July 2020 1:14:04 pm
  * Modified By: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
  * Copyright 2020, CamelCase Technologies Ltd
@@ -211,8 +211,6 @@ expressway.bootstrap = () => {
     };
 
     app.serve = (port = null) => {
-        console.log('Servving');
-
         try {
             const usedPort = port || config('app.port') || 3000;
             app.listen(usedPort, null, () =>

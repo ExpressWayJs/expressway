@@ -4,7 +4,7 @@
  * File Created: Monday, 4th May 2020 9:57:54 am
  * Author: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Last Modified: Monday, 20th July 2020 11:49:57 am
+ * Last Modified: Monday, 20th July 2020 1:10:40 pm
  * Modified By: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
  * Copyright 2020, CamelCase Technologies Ltd
@@ -12,7 +12,6 @@
 
 const path = require('path');
 const stackTrace = require('stack-trace');
-const expressway = require('../../..');
 
 global.configCache = {};
 
