@@ -1,0 +1,21 @@
+{
+    "name": "expressway",
+    "version": "0.1.0",
+    "description": "A simple nodejs framework for web partisans",
+    "main": "index.js",
+    "repository": "https://github.com/expresswayjs/expressway.git",
+    "author": "ExpresswayJs <expresswayjs@camelcase.co>",
+    "license": "MIT",
+    "dependencies": {
+        "colors": "^1.4.0",
+        "csurf": "^1.11.0",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "lodash": "^4.17.19",
+        "moment": "^2.27.0",
+        "mongoose": "^5.9.25",
+        "nodemailer": "^6.4.10",
+        "pug": "^3.0.0",
+        "stack-trace": "^0.0.10"
+    }
+}
