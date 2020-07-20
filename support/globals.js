@@ -4,7 +4,7 @@
  * File Created: Monday, 4th May 2020 9:57:54 am
  * Author: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Last Modified: Monday, 20th July 2020 1:10:40 pm
+ * Last Modified: Monday, 20th July 2020 3:44:42 pm
  * Modified By: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
  * Copyright 2020, CamelCase Technologies Ltd
@@ -13,7 +13,8 @@
 const path = require('path');
 const stackTrace = require('stack-trace');
 
-global.configCache = {};
+const configCache = global.configCache || {};
+global.configCache = configCache;
 
 /**
  * cast config into the right type as nodejs process.env is string
@@ -21,7 +22,7 @@ global.configCache = {};
  * @param {string} value 	The value
  * @return mixed
  */
-global.castConfig = (value) => {
+const castConfig = (value) => {
     if (value === 'true') {
         return true;
     }
@@ -38,6 +39,8 @@ global.castConfig = (value) => {
     return value;
 };
 
+global.castConfig = castConfig;
+
 /**
  * Get a config() global
  * call config() without params to get all config
@@ -45,7 +48,7 @@ global.castConfig = (value) => {
  * @param {string} conf 			dot noted config
  * @param {any} defaultVal	value to use when conf is not available
  */
-global.config = (conf = null, defaultVal = null) => {
+const config = (conf = null, defaultVal = null) => {
     if (!conf) return configCache;
 
     const confSplit = conf.split('.');
@@ -90,26 +93,15 @@ global.config = (conf = null, defaultVal = null) => {
         return defaultVal;
     }
 };
+global.config = config;
 
-global.env = (env, defaultVal = null) => {
+const env = (env, defaultVal = null) => {
     return process.env[env] || defaultVal;
 };
+global.env = env;
 
-// global.use = (uri) => {
-// 	try {
-// 		const module = require(path.join(appRoot, uri));
-// 		try {
-// 			return module;
-// 		} catch (error) {
-// 			throw error;
-// 		}
-// 	} catch (error) {
-// 		require(uri);
-// 	}
-// };
-
-global.use = (mPath) => {
-    const { isFile, isDirectory } = require('../../support/io');
+const use = (mPath) => {
+    const { isFile, isDirectory } = require('./io');
 
     try {
         let modulePath = mPath,
@@ -158,4 +150,14 @@ global.use = (mPath) => {
     } catch (error) {
         throw error;
     }
+};
+
+global.use = use;
+
+module.exports = {
+    configCache,
+    castConfig,
+    config,
+    env,
+    use,
 };

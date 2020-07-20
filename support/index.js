@@ -4,11 +4,12 @@
  * File Created: Saturday, 30th May 2020 5:30:54 am
  * Author: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Last Modified: Monday, 20th July 2020 12:24:47 pm
+ * Last Modified: Monday, 20th July 2020 3:34:43 pm
  * Modified By: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
  * Copyright 2020, CamelCase Technologies Ltd
  */
+const { config } = require('./globals');
 /**
  * Compose an API JSON object
  * @param {bool} status Status true or false
@@ -187,4 +188,5 @@ module.exports = {
     getDriver: require('./get-driver'),
     installModules: require('./install-modules'),
     facade: require('./facade'),
+    crypt: require('./crypt'),
 };

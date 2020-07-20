@@ -4,13 +4,13 @@
  * File Created: Monday, 20th July 2020 11:53:43 am
  * Author: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Last Modified: Monday, 20th July 2020 1:11:45 pm
+ * Last Modified: Monday, 20th July 2020 3:30:30 pm
  * Modified By: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
  * Copyright 2020, CamelCase Technologies Ltd
  */
 
-require('./globals');
+require('../../support/globals');
 require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
