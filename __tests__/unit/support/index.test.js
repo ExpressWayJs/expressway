@@ -4,7 +4,7 @@
  * File Created: Monday, 20th July 2020 2:26:52 pm
  * Author: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Last Modified: Monday, 20th July 2020 3:53:33 pm
+ * Last Modified: Monday, 20th July 2020 4:21:05 pm
  * Modified By: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
  * Copyright 2020, CamelCase Technologies Ltd
@@ -42,7 +42,6 @@ describe('support', () => {
         const algebra = sha512('algebra'),
             numberTest = sha512(1234567890);
 
-        console.log(algebra, numberTest);
         expect(algebra.substr(0, 15)).toBe('df1c7ca89cb29b2');
 
         // Test numbers too

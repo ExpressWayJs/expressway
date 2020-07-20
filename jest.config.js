@@ -4,7 +4,7 @@
  * File Created: Monday, 20th July 2020 1:44:00 pm
  * Author: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Last Modified: Monday, 20th July 2020 3:46:04 pm
+ * Last Modified: Monday, 20th July 2020 4:23:03 pm
  * Modified By: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
  * Copyright 2020, CamelCase Technologies Ltd
@@ -98,7 +98,8 @@ module.exports = {
                 csrf_ignored_methods: [Array],
             },
             crypto: {
-                key: 'i am the key to rule them all',
+                key:
+                    'A0No1t3Very5Secure8Pass5ThaT09!IasAm09Using99Is=This-Long8Enuf>?',
             },
         },
     },
