@@ -1,10 +1,10 @@
 /*
  * File: index.js
- * Project: expressway
+ * Project: @expresswayjs/expressway
  * File Created: Saturday, 2nd May 2020 4:15:25 pm
  * Author: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Last Modified: Monday, 20th July 2020 3:33:09 pm
+ * Last Modified: Saturday, 24th October 2020 3:33:41 pm
  * Modified By: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
  * Copyright 2020, CamelCase Technologies Ltd
@@ -109,6 +109,48 @@ const loadMiddlewares = (app) => {
 };
 
 /**
+ * Autoload all service providers
+ * @param {Object} app The main app object
+ */
+const loadServiceProviders = async (app) => {
+    const location = path.join(appRoot, '/app/providers/'),
+        load = async (provider) => {
+            if (isClass(provider)) {
+                const p = new provider(app);
+                await p.boot();
+            } else {
+                await provider(app);
+            }
+        };
+
+    const loadPromises = [];
+
+    if (config('app.autoload_providers', false)) {
+        if (!isDirectory(location)) return;
+        const files = getFilesArray(location);
+
+        if (files.length) {
+            files.forEach(async (provider) => {
+                // Dont read index files, bad omen
+                if (endsWith(provider, 'index.js') || isDotFile(provider))
+                    return;
+                loadPromises.push(load(use(`${provider}`)));
+            });
+        }
+    } else {
+        const providers = config('app.providers', []);
+
+        if (providers.length) {
+            providers.forEach(async (provider) => {
+                loadPromises.push(load(use(`${provider}`)));
+            });
+        }
+    }
+
+    return Promise.all(loadPromises);
+};
+
+/**
  * Boot the system
  */
 expressway.bootstrap = () => {
@@ -191,10 +233,13 @@ expressway.bootstrap = () => {
         // Load external middlewares before routes
         loadMiddlewares(app);
 
+        // Load service providers
+        await loadServiceProviders(app);
+
         const routes = use('/routes');
 
         // Routers
-        app.use('/', routes.main);
+        if (routes) app.use('/', routes.main);
 
         cacheRouters(app);
 
