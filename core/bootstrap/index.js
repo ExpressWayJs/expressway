@@ -4,17 +4,17 @@
  * File Created: Saturday, 2nd May 2020 4:15:25 pm
  * Author: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Last Modified: Saturday, 24th October 2020 3:33:41 pm
+ * Last Modified: Friday, 19th February 2021 2:22:01 pm
  * Modified By: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Copyright 2020, CamelCase Technologies Ltd
+ * Copyright 2021, CamelCase Technologies Ltd
  */
 
 // Now you can touch, but still dont touch
 const path = require('path');
 const bodyParser = require('body-parser');
 const expressway = require('./app');
-const { getFilesArray, isDotFile } = use('/support/io');
+const { getFilesArray, isDotFile } = require('../../support/io');
 const { isEmpty, endsWith } = require('lodash');
 
 const { app } = expressway;
@@ -55,7 +55,7 @@ const cacheRouters = (app) => {
             )
                 return;
 
-            if (config('app.env') !== 'local' && filename == 'test.js') return;
+            // if (!config('app.debug') && filename == 'test.js') return;
 
             try {
                 const routes = require(file);
@@ -157,6 +157,9 @@ expressway.bootstrap = () => {
     // Cache config
     cacheConfig();
 
+    // Modify servers
+    require('./server')(app);
+
     app.boot = async () => {
         // Load features
         await require('./loader')(app);
@@ -256,14 +259,17 @@ expressway.bootstrap = () => {
     };
 
     app.serve = (port = null) => {
-        try {
-            const usedPort = port || config('app.port') || 3000;
-            app.listen(usedPort, null, () =>
-                console.log(`🚀 Expressway on lane ${usedPort}`)
-            );
-        } catch (error) {
-            console.error(error);
-        }
+        return new Promise((resolve, reject) => {
+            try {
+                const usedPort = port || config('app.port') || 3000;
+                app.listen(usedPort, null, () =>
+                    console.log(`🚀 Lisening on port ${usedPort}`)
+                );
+                resolve(app);
+            } catch (error) {
+                reject(error);
+            }
+        });
     };
 
     return app;

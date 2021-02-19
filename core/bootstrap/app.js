@@ -1,13 +1,13 @@
 /*
  * File: app.js
- * Project: expressway
+ * Project: @expresswayjs/expressway
  * File Created: Monday, 20th July 2020 11:53:43 am
  * Author: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Last Modified: Monday, 20th July 2020 3:30:30 pm
+ * Last Modified: Friday, 19th February 2021 2:09:17 pm
  * Modified By: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Copyright 2020, CamelCase Technologies Ltd
+ * Copyright 2021, CamelCase Technologies Ltd
  */
 
 require('../../support/globals');
@@ -15,9 +15,11 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 
-// Initialize express
+// Initialize express or say initialize express
 const expressway = require('express');
 
+// Keep the original version of express
+// But create the express app as a property of expressway
 expressway.app = expressway();
 
 try {

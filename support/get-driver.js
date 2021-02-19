@@ -1,13 +1,13 @@
 /*
  * File: get-driver.js
- * Project: expressway
+ * Project: @expresswayjs/expressway
  * File Created: Saturday, 30th May 2020 5:48:46 am
  * Author: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Last Modified: Monday, 20th July 2020 1:25:41 pm
+ * Last Modified: Friday, 19th February 2021 2:28:18 pm
  * Modified By: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Copyright 2020, CamelCase Technologies Ltd
+ * Copyright 2021, CamelCase Technologies Ltd
  */
 const path = require('path');
 const fs = require('fs');
@@ -16,11 +16,21 @@ require('colors');
 /**
  * Load the default module driver
  * @param {string} feature   The system feature/module e.g database
- * @param {string} engine 	The module backend (mongodb, mysql, smtp etc)
+ * @param {string} engine 	The module backend if not default (mongodb, mysql, smtp etc)
  * @param {boolean} noCache Dont load engine from the cache;
+ * @param {object} defaultConfig If config is not found (or set in config dir) use this
  */
-const getDriver = (feature, engine = null, noCache = false) => {
+const getDriver = (
+    feature,
+    engine = null,
+    noCache = false,
+    defaultConfig = {}
+) => {
     const backend = config(`${feature}.default`);
+
+    if (!backend && defaultConfig) {
+        backend = defaultConfig['default'];
+    }
 
     // No module specified
     if (!engine && !backend) {
@@ -34,6 +44,8 @@ const getDriver = (feature, engine = null, noCache = false) => {
 
     // Load the configuration
     const backendConfig = config(`${feature}.${engine || backend}`);
+    if (!backendConfig && defaultConfig)
+        backendConfig = defaultConfig[engine || backend];
     if (!backendConfig) {
         const message = `${
             engine || backend
