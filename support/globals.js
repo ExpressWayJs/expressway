@@ -1,10 +1,10 @@
 /*
  * File: globals.js
- * Project: expressway
+ * Project: @expresswayjs/expressway
  * File Created: Monday, 4th May 2020 9:57:54 am
  * Author: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Last Modified: Monday, 20th July 2020 3:44:42 pm
+ * Last Modified: Saturday, 24th October 2020 3:30:42 pm
  * Modified By: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
  * Copyright 2020, CamelCase Technologies Ltd

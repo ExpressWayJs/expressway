@@ -1,10 +1,10 @@
 /*
  * File: loader.js
- * Project: expressway
+ * Project: @expresswayjs/expressway
  * File Created: Saturday, 30th May 2020 6:16:45 am
  * Author: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Last Modified: Monday, 20th July 2020 1:19:32 pm
+ * Last Modified: Saturday, 24th October 2020 3:39:41 pm
  * Modified By: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
  * Copyright 2020, CamelCase Technologies Ltd
@@ -17,7 +17,7 @@
  * Others are lazy loaded when needed
  * it is better to load dependencies that install modules at runtime first
  */
-const backends = config('app.modules') || ['mail', 'database'];
+const backends = config('app.modules') || ['mail', 'database', 'caching'];
 
 const loadBackends = async () => {
     // Load facaded before other modules are loaded
@@ -38,6 +38,9 @@ const loadBackends = async () => {
      * Stack them all in promise so that they are loaded in order
      */
     const loadPromises = backends.map((backend) => {
+        // Dot or slash notation means the backend
+        // is an absolute path in either node_modules
+        // or relative to the application
         if (backend.split(/[\/|\.]/).length === 1)
             return require(`../${backend}/loader`)();
         return require(`${backend}/loader`)();
