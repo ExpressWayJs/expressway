@@ -4,7 +4,7 @@
  * File Created: Saturday, 30th May 2020 5:48:46 am
  * Author: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Last Modified: Friday, 19th February 2021 2:28:18 pm
+ * Last Modified: Friday, 19th February 2021 3:53:21 pm
  * Modified By: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
  * Copyright 2021, CamelCase Technologies Ltd
@@ -26,7 +26,7 @@ const getDriver = (
     noCache = false,
     defaultConfig = {}
 ) => {
-    const backend = config(`${feature}.default`);
+    let backend = config(`${feature}.default`);
 
     if (!backend && defaultConfig) {
         backend = defaultConfig['default'];

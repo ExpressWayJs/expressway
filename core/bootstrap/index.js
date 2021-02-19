@@ -4,7 +4,7 @@
  * File Created: Saturday, 2nd May 2020 4:15:25 pm
  * Author: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Last Modified: Friday, 19th February 2021 2:22:01 pm
+ * Last Modified: Friday, 19th February 2021 4:56:22 pm
  * Modified By: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
  * Copyright 2021, CamelCase Technologies Ltd
@@ -14,7 +14,7 @@
 const path = require('path');
 const bodyParser = require('body-parser');
 const expressway = require('./app');
-const { getFilesArray, isDotFile } = require('../../support/io');
+const { getFilesArray, isDotFile, isDirectory } = require('../../support/io');
 const { isEmpty, endsWith } = require('lodash');
 
 const { app } = expressway;
@@ -26,13 +26,27 @@ const configCache = global.configCache;
  * Load and cache configs
  */
 const cacheConfig = () => {
-    const files = getFilesArray(path.join(appRoot, '/config/'));
+    const files = getFilesArray(path.join(expresswayRoot, '/config/')).concat(
+        getFilesArray(path.join(appRoot, '/config/'))
+    );
     if (files.length) {
         files.forEach((file) => {
             const filename = path.basename(file);
             // Dont read index files, bad omen
             if (filename === 'index.js' || isDotFile(file)) return;
-            configCache[filename.replace(/\.js$/, '')] = require(file);
+            const cName = filename.replace(/\.js$/, '');
+            if (configCache[cName] !== undefined) {
+                if (Array.isArray(configCache[cName]))
+                    configCache[cName] = [
+                        ...configCache[cName],
+                        ...require(file),
+                    ];
+                else
+                    configCache[cName] = {
+                        ...configCache[cName],
+                        ...require(file),
+                    };
+            } else configCache[cName] = require(file);
         });
     }
 };
@@ -166,6 +180,11 @@ expressway.bootstrap = () => {
 
         app.disable('x-powered-by');
 
+        // Register Static files first
+        const staticLocation = config('app.static_dir');
+        if (staticLocation)
+            app.use(expressway.static(path.join(appRoot, staticLocation)));
+
         // BodyParser Obviously
         app.use(bodyParser.json());
         app.use(
@@ -245,11 +264,6 @@ expressway.bootstrap = () => {
         if (routes) app.use('/', routes.main);
 
         cacheRouters(app);
-
-        // Static files
-        const staticLocation = config('app.static_dir');
-        if (staticLocation)
-            app.use(expressway.static(path.join(appRoot, staticLocation)));
 
         // Catch all error handler
         app.use(routes.errors);

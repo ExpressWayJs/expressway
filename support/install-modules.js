@@ -1,13 +1,13 @@
 /*
  * File: install-modules.js
- * Project: expressway
+ * Project: @expresswayjs/expressway
  * File Created: Saturday, 30th May 2020 6:46:02 am
  * Author: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Last Modified: Monday, 20th July 2020 11:36:40 am
+ * Last Modified: Friday, 19th February 2021 4:22:45 pm
  * Modified By: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Copyright 2020, CamelCase Technologies Ltd
+ * Copyright 2021, CamelCase Technologies Ltd
  */
 require('colors');
 
@@ -36,18 +36,40 @@ const installModules = async (dependencies) => {
     try {
         // Please use require.resolve('module') later;
         const installedPackages = await new Promise((resolve, reject) => {
-            let pkg = fs.readFileSync(path.join(appRoot, '../package.json'));
+            let appPkgs = fs.readFileSync(
+                    path.join(appRoot, '../package.json')
+                ),
+                expresswayPkgs = fs.readFileSync(
+                    path.join(expresswayRoot, 'package.json')
+                ),
+                pkg = {};
 
-            if (pkg) {
-                pkg = JSON.parse(pkg);
-
-                resolve({
-                    ...pkg.dependencies,
-                    ...pkg.devDependencies,
-                });
-
-                reject(new ReferenceError('package.json not found'));
+            if (expresswayPkgs) {
+                let parsed = JSON.parse(expresswayPkgs);
+                pkg = {
+                    ...pkg,
+                    ...(parsed.devDependencies || {}),
+                    ...(parsed.dependencies || {}),
+                };
             }
+            if (appPkgs) {
+                let parsed = JSON.parse(appPkgs);
+                pkg = {
+                    ...pkg,
+                    ...(parsed.devDependencies || {}),
+                    ...(parsed.dependencies || {}),
+                };
+            }
+
+            if (Object.keys(pkg).length) {
+                resolve(pkg);
+                return;
+            }
+            reject(
+                new ReferenceError(
+                    'package.json not found or no depencies installed'
+                )
+            );
         });
 
         for (var i = 0; i < dependencies.length; i++) {

@@ -1,13 +1,13 @@
 /*
- * File: index.js
- * Project: expressway
+ * File: CrudManager.js
+ * Project: @expresswayjs/expressway
  * File Created: Thursday, 16th July 2020 5:44:41 am
  * Author: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Last Modified: Monday, 20th July 2020 11:25:08 am
+ * Last Modified: Friday, 19th February 2021 4:48:03 pm
  * Modified By: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Copyright 2020, CamelCase Technologies Ltd
+ * Copyright 2021, CamelCase Technologies Ltd
  */
 
 const _ = require('lodash');
@@ -87,7 +87,7 @@ class CrudManager {
      *
      * @param {object} filter The new filters
      */
-    mergetFilters(filter) {
+    mergeFilters(filter) {
         if (filter && typeof filter !== 'object')
             throw new TypeError('Filter must be an object');
 
@@ -106,7 +106,7 @@ class CrudManager {
      * @param {object} filter The filter for a get query
      */
     where(filter) {
-        if (filter) this.mergetFilters(filter);
+        if (filter) this.mergeFilters(filter);
         return this;
     }
 
@@ -169,7 +169,7 @@ class CrudManager {
      * @return {object|null} 	List of paginated providers
      */
     async get(filter = {}, limit = null, page = null) {
-        this.mergetFilters(filter || {})
+        this.mergeFilters(filter || {})
             .limit(limit)
             .page(page);
 
@@ -190,7 +190,7 @@ class CrudManager {
      * @return {object|null}
      */
     async find(filter = {}, process = true) {
-        this.mergetFilters(filter || {});
+        this.mergeFilters(filter || {});
 
         this.model = await this.Model.find(this.queryFilter);
 

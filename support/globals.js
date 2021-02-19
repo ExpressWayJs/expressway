@@ -4,10 +4,10 @@
  * File Created: Monday, 4th May 2020 9:57:54 am
  * Author: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Last Modified: Saturday, 24th October 2020 3:30:42 pm
+ * Last Modified: Friday, 19th February 2021 4:43:15 pm
  * Modified By: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Copyright 2020, CamelCase Technologies Ltd
+ * Copyright 2021, CamelCase Technologies Ltd
  */
 
 const path = require('path');
@@ -49,7 +49,20 @@ global.castConfig = castConfig;
  * @param {any} defaultVal	value to use when conf is not available
  */
 const config = (conf = null, defaultVal = null) => {
-    if (!conf) return configCache;
+    // Recursion casting
+    function parse(obj) {
+        for (let cr in obj) {
+            if (typeof obj[cr] === 'string') {
+                obj[cr] = castConfig(obj[cr]);
+            } else if (typeof obj[cr] === 'object' && !Array.isArray(cr)) {
+                parse(obj[cr]);
+            }
+        }
+
+        return obj;
+    }
+
+    if (!conf) return parse(configCache);
 
     const confSplit = conf.split('.');
     if (confSplit.length == 1) return process.env[conf] || defaultVal;
@@ -58,20 +71,6 @@ const config = (conf = null, defaultVal = null) => {
         let confRecurse = configCache[confSplit[0]];
         for (let index = 1; index < confSplit.length; index++) {
             confRecurse = confRecurse[confSplit[index]];
-        }
-
-        // Recursion casting
-        function parse(object) {
-            for (let cr in object) {
-                if (typeof object[cr] === 'string') {
-                    object[cr] = castConfig(object[cr]);
-                } else if (
-                    typeof object[cr] === 'object' &&
-                    !Array.isArray(cr)
-                ) {
-                    parse(object[cr]);
-                }
-            }
         }
 
         // Cast the configurations
