@@ -1,13 +1,13 @@
 /*
  * File: index.js
- * Project: expressway
+ * Project: @expresswayjs/expressway
  * File Created: Saturday, 30th May 2020 5:30:54 am
  * Author: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Last Modified: Monday, 20th July 2020 3:34:43 pm
+ * Last Modified: Friday, 19th February 2021 2:32:02 pm
  * Modified By: Temitayo Bodunrin (temitayo@camelcase.co)
  * -----
- * Copyright 2020, CamelCase Technologies Ltd
+ * Copyright 2021, CamelCase Technologies Ltd
  */
 const { config } = require('./globals');
 /**
@@ -176,6 +176,13 @@ const decryptModel = (obj) => {
     return obj;
 };
 
+const ucwords = (text) => {
+    return text
+        .split(' ')
+        .map((str) => `${str[0].toUpperCase()}${str.slice(1).toLowerCase()}`)
+        .join(' ');
+};
+
 module.exports = {
     response,
     successJson,
@@ -185,8 +192,10 @@ module.exports = {
     isClass,
     getExternalEndpoint,
     decryptModel,
+    ucwords,
     getDriver: require('./get-driver'),
     installModules: require('./install-modules'),
     facade: require('./facade'),
     crypt: require('./crypt'),
+    io: require('./io'),
 };
