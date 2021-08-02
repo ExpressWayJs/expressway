@@ -3,30 +3,16 @@ pipeline{
     stages{
         stage("build"){
             steps{
-                echo "executing A"
+                echo 'Build starts!!'
+                nodejs('NodeJs-14.15.1') {
+                    sh 'echo Installing Deps!'
+                    sh 'yarn'
+                    sh 'echo Testing!'
+                    sh 'yarn test'
+                    sh "echo Test Done"
+                }
+
             }
-            post{
-                always{
-                    echo "Building the stage branch"
-                }
-                success{
-                    echo "Stage executed successfully"
-                }
-                failure{
-                    echo "Stage execution failed"
-                }
-            }
-        }
-    }
-    post{
-        always{
-            echo "Pipeline build init"
-        }
-        success{
-            echo "Pipeline executed successfully "
-        }
-        failure{
-            echo "Pipeline execution failed"
         }
     }
 }
